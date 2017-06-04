@@ -1,0 +1,13 @@
+package LootPackage;
+
+import java.util.Timer;
+
+public class Looters {
+	GamePanel gprun;
+public static void main(String[] args) {
+	
+}
+public void setup(){
+	gprun = new GamePanel();
+}
+}
