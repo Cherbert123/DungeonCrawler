@@ -27,5 +27,7 @@ public void setup(){
 	frame.setVisible(true);
 	frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 	gprun.startGame();
+	gprun.generate();
+
 }
 }

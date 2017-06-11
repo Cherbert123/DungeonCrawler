@@ -30,19 +30,34 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener{
 	public static BufferedImage menuBackgroundImg;
 	public static BufferedImage subLogo;
 	public static BufferedImage woodenWallImg;
-	Player player = new Player();
+	public static BufferedImage solidFloorTile;
+	public static BufferedImage waterFloorTile;
+	public static BufferedImage blockedFloorTile;
+	public static BufferedImage playerImg;
+	int yTile = 0;
+	int xTile = 0;
+	int rand;
+	public String room = "";
+	ObjectManager om = new ObjectManager();
+	Player player = new Player(400,750,50,50);
 
 	
 	public GamePanel(){
 		framerate = new Timer(1000/60, this);
+		om.addObject(player);
 		try {
 			logoImg = ImageIO.read(this.getClass().getResourceAsStream("Logo.png"));
 			menuBackgroundImg = ImageIO.read(this.getClass().getResourceAsStream("MenuBackGround.jpg"));
 			subLogo = ImageIO.read(this.getClass().getResourceAsStream("Sublogo.png"));
 			woodenWallImg = ImageIO.read(this.getClass().getResourceAsStream("WoodenWall.jpg"));
+			playerImg = ImageIO.read(this.getClass().getResourceAsStream("Player.png"));
+			solidFloorTile = ImageIO.read(this.getClass().getResourceAsStream("solidFloorTile.png"));
+			waterFloorTile = ImageIO.read(this.getClass().getResourceAsStream("waterFloorTile.png"));
+			blockedFloorTile = ImageIO.read(this.getClass().getResourceAsStream("blockedFloorTile.png"));
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
+		
 		
 	}
 	public void actionPerformed(ActionEvent arg0) {
@@ -77,7 +92,7 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener{
 		
 	}
 	private void updateGameState() {
-
+		om.update();
 		
 	}
 	private void updateEndState() {
@@ -98,11 +113,42 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener{
 				currentState = GAME_STATE;
 			}
 		}
+		if(e.getKeyCode() == 39){
+			player.right = true;
+			player.update();
+		}
+		if(e.getKeyCode() == 37){
+			player.left = true;
+			player.update();
+		}
+		if(e.getKeyCode() == 38){
+			player.up = true;
+			player.update();
+		}
+		if(e.getKeyCode() == 40){
+		player.down = true;
+		player.update();
+		}
 		
 	}
 	@Override
-	public void keyReleased(KeyEvent arg0) {
-
+	public void keyReleased(KeyEvent e) {
+		if(e.getKeyCode() == 39){
+			player.right = false;
+			player.update();
+		}
+		if(e.getKeyCode() == 37){
+			player.left = false;
+			player.update();
+		}
+		if(e.getKeyCode() == 38){
+			player.up = false;
+			player.update();
+		}
+		if(e.getKeyCode() == 40){
+		player.down = false;
+		player.update();
+		}
 		
 	}
 	@Override
@@ -126,8 +172,67 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener{
 		// TODO Auto-generated method stub
 		
 	}
+	
 	private void drawGameState(Graphics g) {
-		// TODO Auto-generated method stub
+	xTile = 0;
+	yTile = 0;
+	for (int e = 0; e < 16; e++) {
+	
+		for (int i = 0; i < 16; i++) {
+
+			if (room.charAt(xTile) == '1') {
+				g.drawImage(solidFloorTile, i * 50, yTile, null);
+				System.out.println(room.charAt(i));
+			}  else if (room.charAt(xTile) == '2') {
+				g.drawImage(waterFloorTile, i * 50, yTile, null);
+				System.out.println(room.charAt(i));
+			} else if (room.charAt(xTile) == '3') {
+				g.drawImage(blockedFloorTile, i * 50, yTile, null);
+				System.out.println(room.charAt(i));
+			}
+			xTile++;
+			
+	}
+		yTile = yTile + 50;
+	}
+		om.draw(g);
+	}
+	public void generate(){
+		Random random = new Random();
+		for (int i = 0; i < 16; i++) {
+			for (int j = 0; j < 16; j++) {
+				if (rand == 1) {
+					room = room + "1";
+				} else if(rand == 0){
+					rand = random.nextInt(3);
+					if( rand > 1){
+						room = room + "1";
+					} else if(rand <= 1){
+					
+						room = room + "2";
+					}
+				} else if (rand == 2) {
+					rand = random.nextInt(3);
+					if( rand <= 1){
+						room = room + "1";
+					} else if(rand > 1){
+					
+						rand = random.nextInt(3);
+						if( rand <= 1){
+							room = room + "1";
+						} else if(rand > 1){
+						
+							room = room + "3";
+						}
+					}
+				}
+				rand = random.nextInt(3);
+						
+			}
+	
+		}
+		System.out.println(room);
 		
 	}
+	
 }

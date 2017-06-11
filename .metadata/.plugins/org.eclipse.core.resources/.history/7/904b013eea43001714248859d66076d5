@@ -1,7 +1,0 @@
-package LootPackage;
-
-public class Looters {
-public static void main(String[] args) {
-	
-}
-}
