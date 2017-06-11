@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.util.Random;
 
 import javax.imageio.ImageIO;
+import javax.swing.JButton;
 import javax.swing.JPanel;
 import javax.swing.Timer;
 
@@ -34,6 +35,9 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener{
 	public static BufferedImage waterFloorTile;
 	public static BufferedImage blockedFloorTile;
 	public static BufferedImage playerImg;
+	JButton plusStrength = new JButton("+");
+	JButton minusStrength = new JButton("-");
+	boolean inventory = false;
 	int yTile = 0;
 	int xTile = 0;
 	int rand;
@@ -57,7 +61,9 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener{
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-		
+		setLayout(null);
+		plusStrength.setBounds(50, 50, 50, 50);
+		plusStrength.setLocation(700, 250);
 		
 	}
 	public void actionPerformed(ActionEvent arg0) {
@@ -102,6 +108,7 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener{
 // Key Handler Methods
 	@Override
 	public void keyPressed(KeyEvent e) {
+		System.out.println(e);
 		if(e.getKeyCode() == 10){
 			if(currentState == END_STATE){
 				currentState = MENU_STATE;
@@ -149,6 +156,7 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener{
 		player.down = false;
 		player.update();
 		}
+	
 		
 	}
 	@Override
@@ -164,7 +172,8 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener{
 	}
 	private void drawPlayerCState(Graphics g) {
 		g.drawImage(woodenWallImg, 0, 0, null);
-		
+		g.drawImage(GamePanel.playerImg, 50, 175, 450, 475, null);
+		plusStrength.paint(g);
 
 		
 	}
@@ -182,13 +191,13 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener{
 
 			if (room.charAt(xTile) == '1') {
 				g.drawImage(solidFloorTile, i * 50, yTile, null);
-				System.out.println(room.charAt(i));
+				
 			}  else if (room.charAt(xTile) == '2') {
 				g.drawImage(waterFloorTile, i * 50, yTile, null);
-				System.out.println(room.charAt(i));
+
 			} else if (room.charAt(xTile) == '3') {
 				g.drawImage(blockedFloorTile, i * 50, yTile, null);
-				System.out.println(room.charAt(i));
+		
 			}
 			xTile++;
 			

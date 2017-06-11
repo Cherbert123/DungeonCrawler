@@ -1,5 +1,6 @@
 package lootPackage;
 
+import java.util.Random;
 import java.util.Timer;
 
 import javax.swing.JFrame;
@@ -11,16 +12,20 @@ public class Looters {
 	JFrame frame;
 	static final int WIDTH = 800;
 	static final int HEIGHT = 800;
+	
 public static void main(String[] args) {
 Looters toRun = new Looters();
+
 	
 	toRun.setup();
 }
 public Looters(){
 	gprun = new GamePanel();
 	frame = new JFrame();
+
 }
 public void setup(){
+	frame.isResizable();
 	frame.setSize(WIDTH, HEIGHT);
 	frame.add(gprun);
 	frame.addKeyListener(gprun);
@@ -28,6 +33,8 @@ public void setup(){
 	frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 	gprun.startGame();
 	gprun.generate();
+	
 
 }
+
 }

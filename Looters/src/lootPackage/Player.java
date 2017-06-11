@@ -2,12 +2,19 @@ package lootPackage;
 
 import java.awt.Color;
 import java.awt.Graphics;
+import java.util.Random;
 
 
 
 public class Player extends GameObject{
 	
 int speed;
+
+int strength;
+int health;
+int charisma;
+int knowledge;
+int nimbleness;
 boolean up = false;
 boolean down = false;
 boolean right = false;
@@ -50,4 +57,5 @@ boolean left = false;
 	public void draw(Graphics g){
 		g.drawImage(GamePanel.playerImg, x, y, width, height, null);
 	}
+	
 }
