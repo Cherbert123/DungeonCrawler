@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.util.Random;
 
 import javax.imageio.ImageIO;
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JPanel;
 import javax.swing.Timer;
@@ -17,7 +18,7 @@ import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.image.BufferedImage;
-
+	
 public class GamePanel extends JPanel implements ActionListener, KeyListener{
 	Timer framerate;
 	final int MENU_STATE = 0;
@@ -37,11 +38,12 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener{
 	public static BufferedImage blockedFloorTile;
 	public static BufferedImage playerImg;
 	Font normal;
-	JButton plusStrength = new JButton("+");
+	JButton plusStrength;
 	JButton minusStrength = new JButton("-");
 	JButton plusSpeed = new JButton("+");
 	JButton minusSpeed = new JButton("-");
 	boolean inventory = false;
+	boolean myTurn;
 	int yTile = 0;
 	int xTile = 0;
 	int rand;
@@ -51,6 +53,8 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener{
 	
 	
 	public GamePanel(){
+		plusStrength = new JButton(new ImageIcon("Plus.png"));
+		myTurn = true;
 		plusSpeed.setFocusable(false);
 		minusSpeed.setFocusable(false);
 		plusStrength.setFocusable(false);
