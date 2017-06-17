@@ -10,7 +10,7 @@ public class Player extends GameObject{
 	
 int speed;
 
-int strength;
+int strength = 0;
 int health;
 int charisma;
 int knowledge;

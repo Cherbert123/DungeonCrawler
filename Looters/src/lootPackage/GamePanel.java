@@ -8,17 +8,15 @@ import javax.swing.JButton;
 import javax.swing.JPanel;
 import javax.swing.Timer;
 
-
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.Graphics;
+import java.awt.Rectangle;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.image.BufferedImage;
-
-import javax.swing.JPanel;
 
 public class GamePanel extends JPanel implements ActionListener, KeyListener{
 	Timer framerate;
@@ -27,16 +25,22 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener{
 	final int END_STATE = 2;
 	final int PLAYERC_STATE = 6;
 	int currentState = MENU_STATE;
+	int statPoints = 35;
 	public static BufferedImage logoImg;
 	public static BufferedImage menuBackgroundImg;
 	public static BufferedImage subLogo;
 	public static BufferedImage woodenWallImg;
 	public static BufferedImage solidFloorTile;
 	public static BufferedImage waterFloorTile;
+	public static BufferedImage plusImg;
+	public static BufferedImage minusImg;
 	public static BufferedImage blockedFloorTile;
 	public static BufferedImage playerImg;
+	Font normal;
 	JButton plusStrength = new JButton("+");
 	JButton minusStrength = new JButton("-");
+	JButton plusSpeed = new JButton("+");
+	JButton minusSpeed = new JButton("-");
 	boolean inventory = false;
 	int yTile = 0;
 	int xTile = 0;
@@ -44,11 +48,37 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener{
 	public String room = "";
 	ObjectManager om = new ObjectManager();
 	Player player = new Player(400,750,50,50);
-
+	
 	
 	public GamePanel(){
+		plusSpeed.setFocusable(false);
+		minusSpeed.setFocusable(false);
+		plusStrength.setFocusable(false);
+		minusStrength.setFocusable(false);
+		normal = new Font("Arial",Font.PLAIN,35);
 		framerate = new Timer(1000/60, this);
 		om.addObject(player);
+		setLayout(null);
+		plusStrength.setBounds(new Rectangle(700,85,45,45));
+		minusStrength.setBounds(new Rectangle(600,85,45,45));
+		plusStrength.setEnabled(false);
+		plusStrength.setVisible(false);
+		minusStrength.setEnabled(false);
+		minusStrength.setVisible(false);
+		plusStrength.addActionListener(this);
+		minusStrength.addActionListener(this);
+		plusSpeed.setBounds(new Rectangle(700,535,45,45));
+		minusSpeed.setBounds(new Rectangle(600,535,45,45));
+		plusSpeed.setEnabled(false);
+		plusSpeed.setVisible(false);
+		minusSpeed.setEnabled(false);
+		minusSpeed.setVisible(false);
+		plusSpeed.addActionListener(this);
+		minusSpeed.addActionListener(this);
+		add(minusStrength);
+		add(plusStrength);
+		add(minusSpeed);
+		add(plusSpeed);
 		try {
 			logoImg = ImageIO.read(this.getClass().getResourceAsStream("Logo.png"));
 			menuBackgroundImg = ImageIO.read(this.getClass().getResourceAsStream("MenuBackGround.jpg"));
@@ -58,15 +88,15 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener{
 			solidFloorTile = ImageIO.read(this.getClass().getResourceAsStream("solidFloorTile.png"));
 			waterFloorTile = ImageIO.read(this.getClass().getResourceAsStream("waterFloorTile.png"));
 			blockedFloorTile = ImageIO.read(this.getClass().getResourceAsStream("blockedFloorTile.png"));
+		
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-		setLayout(null);
-		plusStrength.setBounds(50, 50, 50, 50);
-		plusStrength.setLocation(700, 250);
+		
+
 		
 	}
-	public void actionPerformed(ActionEvent arg0) {
+	public void actionPerformed(ActionEvent e) {
 		repaint();
 		if(currentState == MENU_STATE){
 			updateMenuState();
@@ -75,7 +105,32 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener{
 		}else if(currentState == END_STATE){
 			updateEndState();
 		}
-		
+		if(e.getSource() == plusStrength){
+			if(statPoints > 0){
+				System.out.println(statPoints);
+			player.strength = player.strength + 1;
+			statPoints = statPoints - 1;
+			}
+		}
+		if(e.getSource() == minusStrength){
+			if(player.strength > 0){
+			player.strength = player.strength - 1;
+			statPoints = statPoints + 1;
+			}
+		}
+		if(e.getSource() == plusSpeed){
+			if(statPoints > 0){
+				System.out.println(statPoints);
+			player.nimbleness = player.nimbleness + 1;
+			statPoints = statPoints - 1;
+			}
+		}
+		if(e.getSource() == minusSpeed){
+			if(player.nimbleness > 0){
+			player.nimbleness = player.nimbleness - 1;
+			statPoints = statPoints + 1;
+			}
+		}
 	}
 	public void paintComponent(Graphics g){
 		if(currentState == MENU_STATE){
@@ -169,20 +224,54 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener{
 		g.drawImage(menuBackgroundImg, 0, 0, null);
 		g.drawImage(logoImg, 75, 200, null);
 		g.drawImage(subLogo, 140, 400, null);
+		plusStrength.setEnabled(false);
+		plusStrength.setVisible(false);
+		minusStrength.setEnabled(false);
+		minusStrength.setVisible(false);
+		minusSpeed.setEnabled(false);
+		minusSpeed.setVisible(false);
+		plusSpeed.setEnabled(false);
+		plusSpeed.setVisible(false);
 	}
 	private void drawPlayerCState(Graphics g) {
 		g.drawImage(woodenWallImg, 0, 0, null);
 		g.drawImage(GamePanel.playerImg, 50, 175, 450, 475, null);
-		plusStrength.paint(g);
-
+		plusStrength.setEnabled(true);
+		plusStrength.setVisible(true);
+		minusStrength.setEnabled(true);
+		minusStrength.setVisible(true);
+		minusSpeed.setEnabled(true);
+		minusSpeed.setVisible(true);
+		plusSpeed.setEnabled(true);
+		plusSpeed.setVisible(true);
+		g.setColor(Color.BLACK);
+		g.setFont(normal);
+		g.drawString("" + player.strength, 660, 120);
+		g.drawString("" + player.nimbleness, 660, 570);
+		
 		
 	}
 	private void drawEndState(Graphics g) {
 		// TODO Auto-generated method stub
-		
+		plusStrength.setEnabled(false);
+		plusStrength.setVisible(false);
+		minusStrength.setEnabled(false);
+		minusStrength.setVisible(false);
+		minusSpeed.setEnabled(false);
+		minusSpeed.setVisible(false);
+		plusSpeed.setEnabled(false);
+		plusSpeed.setVisible(false);
 	}
 	
 	private void drawGameState(Graphics g) {
+		plusStrength.setEnabled(false);
+		plusStrength.setVisible(false);
+		minusStrength.setEnabled(false);
+		minusStrength.setVisible(false);
+		minusSpeed.setEnabled(false);
+		minusSpeed.setVisible(false);
+		plusSpeed.setEnabled(false);
+		plusSpeed.setVisible(false);
 	xTile = 0;
 	yTile = 0;
 	for (int e = 0; e < 16; e++) {

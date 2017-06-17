@@ -9,6 +9,7 @@ import javax.swing.JFrame;
 
 public class Looters {
 	GamePanel gprun;
+
 	JFrame frame;
 	static final int WIDTH = 800;
 	static final int HEIGHT = 800;
@@ -21,6 +22,7 @@ Looters toRun = new Looters();
 }
 public Looters(){
 	gprun = new GamePanel();
+	
 	frame = new JFrame();
 
 }
@@ -33,7 +35,7 @@ public void setup(){
 	frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 	gprun.startGame();
 	gprun.generate();
-	
+
 
 }
 
