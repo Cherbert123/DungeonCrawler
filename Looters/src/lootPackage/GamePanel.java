@@ -37,6 +37,7 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener{
 	public static BufferedImage minusImg;
 	public static BufferedImage blockedFloorTile;
 	public static BufferedImage playerImg;
+	public static BufferedImage attackImg;
 	Font normal;
 	JButton plusStrength;
 	JButton minusStrength;
@@ -60,7 +61,7 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener{
 		rat.p = player;
 		rat.x = 400;
 		rat.y = 400;
-		rat.speed = 50;
+		rat.speed = 20;
 		rat.damage = 2;
 		rat.tactics = "Rage";
 		rat.isAlive = true;
@@ -110,6 +111,7 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener{
 			solidFloorTile = ImageIO.read(this.getClass().getResourceAsStream("solidFloorTile.png"));
 			waterFloorTile = ImageIO.read(this.getClass().getResourceAsStream("waterFloorTile.png"));
 			blockedFloorTile = ImageIO.read(this.getClass().getResourceAsStream("blockedFloorTile.png"));
+			attackImg = ImageIO.read(this.getClass().getResourceAsStream("AttackSelection.png"));
 		
 		} catch (IOException e) {
 			e.printStackTrace();
@@ -299,6 +301,10 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener{
 		minusSpeed.setVisible(false);
 		plusSpeed.setEnabled(false);
 		plusSpeed.setVisible(false);
+		if(player.myTurn == true){
+		
+			
+		}
 	xTile = 0;
 	yTile = 0;
 	for (int e = 0; e < 16; e++) {

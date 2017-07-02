@@ -11,6 +11,7 @@ public class Enemy extends GameObject{
 	int health;
 	Player p;
 	boolean myTurn = false;
+	boolean followPlayer = false;
 	int x;
 	int y;
 	public static BufferedImage giantRatImg;
@@ -27,97 +28,30 @@ public class Enemy extends GameObject{
 
 	}
 	public void parseTactics(String t){
-		if(t.equalsIgnoreCase("Snipe")){
-			if(p.x < x + 200){
-				x = x - speed;
-			} else if(p.x > x - 200){
-				x = x + speed;
-			} else if(p.y < y + 200){
-				y = y - speed;
-			} else if(p.y > y - 200){
-				y = y + speed;
-			} else{
-			//	parseAttack("Ranged");
-				myTurn = false;
-			}
-		} else if(t.equalsIgnoreCase("Rage")){
-			if(p.x < x + 200){
-				x = x - speed;
-				System.out.println(x);
-				if(x >= 800 | x <= -50){
-				x = x + speed;	
-				
-				}
-			} else if(p.x > x - 200){
-				x = x + speed;
-				System.out.println(x);
-				if(x >= 800 | x <= -50){
-					x = x - speed;	
-					
-					}
-			}
-			if(p.y < y + 200){
-				y = y - speed;
-				System.out.println(y);
-				if(y >= 800 | y <= 0){
-					y = y + speed;	
-					
-					}
-			} else if(p.y > y - 200){
-				y = y + speed;
-				if(y >= 800 | y <= 0){
-					y = y - speed;	
-					
-					}
+	
+		 if(t.equalsIgnoreCase("Rage")){
+			if(p.x > x - 150 && p.x < x + 200 && p.y > y - 150 && p.y < y + 200){
+				followPlayer = true;
 			} else {
-				System.out.println("Enemy is Now Legally Blind");
+				followPlayer = false;
 			}
-			//parseAttack("Melee");
-			p.myTurn = true;
-		} else if(t.equalsIgnoreCase("Wait")){
 			
-		} else if(t.equalsIgnoreCase("Engage")){
-			if(p.x < x + 200){
-				x = x + speed;
-			} else if(p.x > x - 200){
-				x = x - speed;
-			} else if(p.y < y + 200){
-				y = y + speed;
-			} else if(p.y > y - 200){
-				y = y - speed;
+			if(followPlayer == true){
+				if (p.x > x) {
+					x = x + speed; 
+				} else if (p.x < x) {
+					x = x - speed; 
+				}
+				if (p.y > y) {
+					y = y + speed; 
+				} else if (p.y < y) {
+					y = y - speed; 
+				}
 			}
-			//parseAttack("Melee");
 			p.myTurn = true;
-		} else if(t.equalsIgnoreCase("HitAndRun")){
-			if(p.x < x + 200){
-				x = x + speed;
-			} else if(p.x > x - 200){
-				x = x - speed;
-			} else if(p.y < y + 200){
-				y = y + speed;
-			} else if(p.y > y - 200){
-				y = y - speed;
-			} else {
-				System.out.println("Enemy is Now Legally Blind");
-			}
-			//parseAttack("Melee");
-			if(p.x < x + 50){
-				x = x - speed;
-				p.myTurn = true;
-			} else if(p.x > x - 50){
-				x = x + speed;
-				p.myTurn = true;
-			} else if(p.y < y + 50){
-				y = y - speed;
-				p.myTurn = true;
-			} else if(p.y > y - 50){
-				y = y + speed;
-				p.myTurn = true;
-			} else {
-				System.out.println("Enemy Had No Where to Run To!");
-			}			
-		}
-		
+			System.out.println(followPlayer + " Player: " + p.x);
+		} 
+
 	}
 /*	public void parseAttack(String a){
 		if(a.equalsIgnoreCase("Ranged")){
