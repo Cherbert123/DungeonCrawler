@@ -39,9 +39,9 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener{
 	public static BufferedImage playerImg;
 	Font normal;
 	JButton plusStrength;
-	JButton minusStrength = new JButton("-");
-	JButton plusSpeed = new JButton("+");
-	JButton minusSpeed = new JButton("-");
+	JButton minusStrength;
+	JButton plusSpeed;
+	JButton minusSpeed;
 	boolean inventory = false;
 	boolean myTurn;
 	int yTile = 0;
@@ -49,11 +49,28 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener{
 	int rand;
 	public String room = "";
 	ObjectManager om = new ObjectManager();
-	Player player = new Player(400,750,50,50);
+	Enemy rat = new Enemy();
+	
+	Player player = new Player(0,0,50,50);
+	
 	
 	
 	public GamePanel(){
+		rat.health = 10;
+		rat.p = player;
+		rat.x = 400;
+		rat.y = 400;
+		rat.speed = 50;
+		rat.damage = 2;
+		rat.tactics = "Rage";
+		rat.isAlive = true;
+		rat.height = 50;
+		rat.width = 50;
 		plusStrength = new JButton(new ImageIcon("Plus.png"));
+		minusStrength = new JButton(new ImageIcon("Minus.png"));
+		plusSpeed = new JButton(new ImageIcon("Plus.png"));
+		minusSpeed = new JButton(new ImageIcon("Minus.png"));
+		
 		myTurn = true;
 		plusSpeed.setFocusable(false);
 		minusSpeed.setFocusable(false);
@@ -61,6 +78,7 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener{
 		minusStrength.setFocusable(false);
 		normal = new Font("Arial",Font.PLAIN,35);
 		framerate = new Timer(1000/60, this);
+		om.addObject(rat);
 		om.addObject(player);
 		setLayout(null);
 		plusStrength.setBounds(new Rectangle(700,85,45,45));
@@ -140,6 +158,7 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener{
 		if(currentState == MENU_STATE){
 			drawMenuState(g);
 		}else if(currentState == GAME_STATE){
+			
 			drawGameState(g);
 		}else if(currentState == END_STATE){
 			drawEndState(g);
@@ -182,18 +201,22 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener{
 		if(e.getKeyCode() == 39){
 			player.right = true;
 			player.update();
+			rat.parseTactics(rat.tactics);
 		}
 		if(e.getKeyCode() == 37){
 			player.left = true;
 			player.update();
+			rat.parseTactics(rat.tactics);
 		}
 		if(e.getKeyCode() == 38){
 			player.up = true;
 			player.update();
+			rat.parseTactics(rat.tactics);
 		}
 		if(e.getKeyCode() == 40){
 		player.down = true;
 		player.update();
+		rat.parseTactics(rat.tactics);
 		}
 		
 	}
@@ -297,6 +320,7 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener{
 	}
 		yTile = yTile + 50;
 	}
+		
 		om.draw(g);
 	}
 	public void generate(){

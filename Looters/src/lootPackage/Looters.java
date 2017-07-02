@@ -11,8 +11,8 @@ public class Looters {
 	GamePanel gprun;
 
 	JFrame frame;
-	static final int WIDTH = 800;
-	static final int HEIGHT = 800;
+	static final int WIDTH = 816;
+	static final int HEIGHT = 834;
 	
 public static void main(String[] args) {
 Looters toRun = new Looters();
