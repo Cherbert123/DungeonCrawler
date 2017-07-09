@@ -17,6 +17,7 @@ public class Enemy extends GameObject{
 	public static BufferedImage giantRatImg;
 	int damage;
 	int speed;
+	int follow = 300;
 	public Enemy(){
 		try {
 			giantRatImg = ImageIO.read(this.getClass().getResourceAsStream("GiantRat.png"));
@@ -30,28 +31,33 @@ public class Enemy extends GameObject{
 	public void parseTactics(String t){
 	
 		 if(t.equalsIgnoreCase("Rage")){
-			if(p.x > x - 150 && p.x < x + 200 && p.y > y - 150 && p.y < y + 200){
+			if(p.x > x - follow && p.x < x + follow + 50 && p.y > y - follow && p.y < y + follow + 50){
 				followPlayer = true;
 			} else {
 				followPlayer = false;
+				p.myTurn = true;
 			}
 			
 			if(followPlayer == true){
 				if (p.x > x) {
 					x = x + speed; 
+					p.myTurn = true;
 				} else if (p.x < x) {
 					x = x - speed; 
+					p.myTurn = true;
 				}
 				if (p.y > y) {
 					y = y + speed; 
+					p.myTurn = true;
 				} else if (p.y < y) {
 					y = y - speed; 
+					p.myTurn = true;
 				}
 			}
 			p.myTurn = true;
 			System.out.println(followPlayer + " Player: " + p.x);
 		} 
-
+		 
 	}
 /*	public void parseAttack(String a){
 		if(a.equalsIgnoreCase("Ranged")){

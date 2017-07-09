@@ -48,6 +48,7 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener{
 	int yTile = 0;
 	int xTile = 0;
 	int rand;
+	int rotation;
 	public String room = "";
 	ObjectManager om = new ObjectManager();
 	Enemy rat = new Enemy();
@@ -210,6 +211,13 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener{
 			player.update();
 			rat.parseTactics(rat.tactics);
 		}
+		if(e.getKeyCode() == 82){
+			if(rotation == 3){
+				rotation = 0;
+			} else {
+			rotation++;	
+			}
+		}
 		if(e.getKeyCode() == 38){
 			player.up = true;
 			player.update();
@@ -301,10 +309,7 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener{
 		minusSpeed.setVisible(false);
 		plusSpeed.setEnabled(false);
 		plusSpeed.setVisible(false);
-		if(player.myTurn == true){
 		
-			
-		}
 	xTile = 0;
 	yTile = 0;
 	for (int e = 0; e < 16; e++) {
@@ -328,6 +333,18 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener{
 	}
 		
 		om.draw(g);
+		if(rotation == 0){
+		g.drawImage(attackImg, player.x, player.y + 50, null);
+		}
+		if(rotation == 1){
+			g.drawImage(attackImg, player.x + 50, player.y, null);
+		}
+		if(rotation == 2){
+			g.drawImage(attackImg, player.x, player.y - 50, null);
+		}
+		if(rotation == 3){
+			g.drawImage(attackImg, player.x - 50, player.y, null);
+		}
 	}
 	public void generate(){
 		Random random = new Random();
