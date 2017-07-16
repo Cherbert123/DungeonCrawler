@@ -231,22 +231,23 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener{
 		}
 		if(e.getKeyCode() == 88){
 			if(rotation == 0){
-				Projectile fireball = new Projectile("wardImg", 0,0,player.x,player.y + 50, 150,150 );
-				om.addObject(fireball);
+				Projectile lightningball = new Projectile("lightningImg", 0,200,player.x,player.y + 50, 50,50 );
+				om.addObject(lightningball);
 			}
 			if(rotation == 1){
-				Projectile fireball = new Projectile("wardImg",1,0,player.x + 50,player.y, 150,150 );
-				om.addObject(fireball);
+				Projectile lightningball = new Projectile("lightningImg",1,200,player.x + 50,player.y, 50,50 );
+				om.addObject(lightningball);
 			}
 			if(rotation == 2){
-				Projectile fireball = new Projectile("wardImg",2,0,player.x,player.y - 50, 150,150 );
-				om.addObject(fireball);
+				Projectile lightningball = new Projectile("lightningImg",2,200,player.x,player.y - 50, 50,50 );
+				om.addObject(lightningball);
 			}
 			if(rotation == 3){
-				Projectile fireball = new Projectile("wardImg",3,0,player.x - 50,player.y, 150,150 );
-				om.addObject(fireball);
+				Projectile lightningball = new Projectile("lightningImg",3,200,player.x - 50,player.y, 50,50 );
+				om.addObject(lightningball);
 			}
 		}
+		
 		if(e.getKeyCode() == 82){
 			if(rotation == 3){
 				rotation = 0;

@@ -15,12 +15,16 @@ public class Enemy extends GameObject{
 	int x;
 	int y;
 	public static BufferedImage giantRatImg;
+	public static BufferedImage kolblodFighterImg;
 	int damage;
 	int speed;
 	int follow = 300;
+	int width;
+	int height;
 	public Enemy(){
 		try {
 			giantRatImg = ImageIO.read(this.getClass().getResourceAsStream("GiantRat.png"));
+			kolblodFighterImg = ImageIO.read(this.getClass().getResourceAsStream("koboldFighter.png"));
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -54,6 +58,11 @@ public class Enemy extends GameObject{
 					p.myTurn = true;
 				}
 			}
+			if(p.x > x - 50 && p.x < x + 50 + 50 && p.y > y - 50 && p.y < y + 50 + 50){
+				p.health = p.health - damage;
+			} else {
+				System.out.println("Miss!");
+			}
 			p.myTurn = true;
 			System.out.println(followPlayer + " Player: " + p.x);
 		} 
@@ -70,7 +79,7 @@ public class Enemy extends GameObject{
 			} else if(p.y > y - 200){
 				p.health = p.health - damage;
 			} else {
-				System.out.println("Enemy Failed A Ranged attack! Maybe they should head back to the barracks?");
+				System.out.println("Enemy Failed A Ranged attack!");
 			}
 		} else if(a.equalsIgnoreCase("Melee")){
 			if(p.x < x + 50){
@@ -82,7 +91,7 @@ public class Enemy extends GameObject{
 			} else if(p.y > y - 50){
 				p.health = p.health - damage;
 			} else {
-				System.out.println("Enemy Attempted to Poke You. It Failed");
+				System.out.println("Enemy Failed A Melee Attack!");
 			}
 		} else if(a.equalsIgnoreCase("ObjectThrow")){
 			
@@ -91,6 +100,6 @@ public class Enemy extends GameObject{
 		}
 	} */
 	public void draw(Graphics g){
-		g.drawImage(giantRatImg, x, y, null);
+		g.drawImage(kolblodFighterImg, x, y, null);
 	}
 }

@@ -27,10 +27,14 @@ boolean left = false;
 		this.width = width;
 		this.height = height;
 		speed = 50 + nimbleness;
+		health = 10 + health;
 	}
 	public void update(){
 		super.update();
 		speed = 50 + nimbleness;
+		if(health == 0){
+			isAlive = false;
+		}
 		if(myTurn == true){
 		if(up){
 			y-=speed;

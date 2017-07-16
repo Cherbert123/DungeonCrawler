@@ -48,6 +48,31 @@ public class ObjectManager {
 			}
 		}
 	}
+	public void checkCollision() {
+		for (int i = 0; i < objects.size(); i++) {
+			for (int j = i + 1; j < objects.size(); j++) {
+				GameObject o1 = objects.get(i);
+				GameObject o2 = objects.get(j);
+				
+				if(o1.collisionBox.intersects(o2.collisionBox)){
+					if((o1 instanceof Enemy && o2 instanceof Projectile) ||
+					   (o2 instanceof Enemy && o1 instanceof Projectile)){
+						score++;
+						System.out.println(score);
+						o1.isAlive = false;
+						o2.isAlive = false;
+					}
+					else if((o1 instanceof Enemy && o2 instanceof Player) ||
+							(o2 instanceof Enemy && o1 instanceof Player)){
+						o1.isAlive = false;
+						o2.isAlive = false;
+					}
+	
+				}
+			}
+		}
+		
+		}
 
 	
 	

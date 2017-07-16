@@ -16,11 +16,12 @@ public class Projectile extends GameObject{
 	int movedSpaces;
 	String img;
 	public static BufferedImage fireImg;
-	public static BufferedImage wardImg;
+	public static BufferedImage lightningImg;
 public Projectile(String img, int rotation, int range, int x, int y, int width, int height){
+	super();
 	try {
 		fireImg = ImageIO.read(this.getClass().getResourceAsStream("FireBlast.png"));
-		wardImg = ImageIO.read(this.getClass().getResourceAsStream("ProtectionRing.png"));
+		lightningImg = ImageIO.read(this.getClass().getResourceAsStream("thunderShock.png"));
 	} catch (IOException e) {
 		e.printStackTrace();
 	}
@@ -34,6 +35,7 @@ public Projectile(String img, int rotation, int range, int x, int y, int width, 
 	
 }
 public void update(){
+	super.update();
 	if(movedSpaces < range){
 		if(rotation == 0){
 			y = y + 25;
@@ -56,9 +58,9 @@ public void draw(Graphics g){
 	if(img.equalsIgnoreCase("fireImg")){
 	g.drawImage(fireImg, x, y, null);
 	}
-	if(img.equalsIgnoreCase("wardImg")){
-		g.drawImage(wardImg, x, y, null);
-		
+	if(img.equalsIgnoreCase("lightningImg")){
+	g.drawImage(lightningImg, x, y, null);
 	}
+
 }
 }
