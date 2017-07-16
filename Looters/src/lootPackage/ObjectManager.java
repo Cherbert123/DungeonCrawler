@@ -1,22 +1,18 @@
 package lootPackage;
 
-
 import java.awt.Graphics;
 import java.util.ArrayList;
-import java.util.Random;
-
-
 
 public class ObjectManager {
 	ArrayList<GameObject> objects;
 	String enemyP = "2000110002";
 	int enemyPCharToInt;
-	int  enemyPL = 0;
+	int enemyPL = 0;
 	private int score = 0;
-	
+
 	long enemyTimer = 0;
 	int enemySpawnTime = 1000;
-	
+
 	public ObjectManager() {
 		objects = new ArrayList<GameObject>();
 	}
@@ -26,12 +22,13 @@ public class ObjectManager {
 	}
 
 	public void update() {
+		checkCollision();
 		for (int i = 0; i < objects.size(); i++) {
 			GameObject o = objects.get(i);
 			o.update();
 		}
-		
-		purgeObjects();	
+
+		purgeObjects();
 	}
 
 	public void draw(Graphics g) {
@@ -39,6 +36,7 @@ public class ObjectManager {
 			GameObject o = objects.get(i);
 			o.draw(g);
 		}
+
 	}
 
 	private void purgeObjects() {
@@ -48,44 +46,44 @@ public class ObjectManager {
 			}
 		}
 	}
+
 	public void checkCollision() {
+
 		for (int i = 0; i < objects.size(); i++) {
 			for (int j = i + 1; j < objects.size(); j++) {
 				GameObject o1 = objects.get(i);
 				GameObject o2 = objects.get(j);
-				
-				if(o1.collisionBox.intersects(o2.collisionBox)){
-					if((o1 instanceof Enemy && o2 instanceof Projectile) ||
-					   (o2 instanceof Enemy && o1 instanceof Projectile)){
+
+				if (o1.collisionBox.intersects(o2.collisionBox)) {
+					System.out.println("Checked Collision (Projectile)");
+					if ((o1 instanceof Enemy && o2 instanceof Projectile)
+							|| (o2 instanceof Enemy && o1 instanceof Projectile)) {
+
 						score++;
 						System.out.println(score);
 						o1.isAlive = false;
 						o2.isAlive = false;
-					}
-					else if((o1 instanceof Enemy && o2 instanceof Player) ||
-							(o2 instanceof Enemy && o1 instanceof Player)){
+					} else if ((o1 instanceof Enemy && o2 instanceof Player)
+							|| (o2 instanceof Enemy && o1 instanceof Player)) {
 						o1.isAlive = false;
 						o2.isAlive = false;
 					}
-	
+
 				}
 			}
 		}
-		
-		}
 
-	
-	
-	
-	public int getScore(){
+	}
+
+	public int getScore() {
 		return score;
 	}
-	
-	public void setScore(int s){
+
+	public void setScore(int s) {
 		score = s;
 	}
-	
-	public void reset(){
+
+	public void reset() {
 		objects.clear();
 	}
 }
