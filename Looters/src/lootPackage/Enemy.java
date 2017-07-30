@@ -35,6 +35,7 @@ public class Enemy extends GameObject {
 	}
 
 	public void parseTactics(String t) {
+		if(isAlive == true){
 		super.update();
 		if (t.equalsIgnoreCase("Rage")) {
 			if (p.x > x - follow && p.x < x + follow + 50 && p.y > y - follow && p.y < y + follow + 50) {
@@ -68,7 +69,7 @@ public class Enemy extends GameObject {
 			System.out.println(followPlayer + " Player: " + p.x);
 		}
 		collisionBox.setBounds(x, y, width, height);
-
+		}
 	}
 
 	/*

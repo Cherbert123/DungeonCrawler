@@ -185,7 +185,7 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener {
 	}
 
 	// Key Handler Methods
-	
+	@Override
 	public void keyPressed(KeyEvent e) {
 		System.out.println(e);
 		if (e.getKeyCode() == 10) {
@@ -219,12 +219,7 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener {
 			player.update();
 			rat.parseTactics(rat.tactics);
 		}
-		
-		
-		
-		
 		if(e.getKeyCode() == 69){
-			//Fireball
 			if(spell.equalsIgnoreCase("FireFire")){
 				if (player.rotation == 0) {
 				Projectile fireball = new Projectile("fireImg", 0, 400, 20, player.x, player.y + 50, 50, 50);
@@ -244,7 +239,6 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener {
 			}
 			spell = "";
 			}
-			//Shock
 			if(spell.equalsIgnoreCase("FireLight")){
 			if (player.rotation == 0) {
 			Projectile lightningball = new Projectile("lightningImg", 0, 200, 25, player.x, player.y + 50, 50, 50);
@@ -264,7 +258,6 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener {
 		}
 		spell = "";
 		}
-			//Freeze Orb
 		if(spell.equalsIgnoreCase("IceIce")){
 			if (player.rotation == 0) {
 		Projectile iceOrbball = new Projectile("iceOrbImg", 0, 350, 1, player.x, player.y + 50, 250, 250);
@@ -284,7 +277,7 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener {
 	}
 	spell = "";
 }
-} 
+}
 		if (e.getKeyCode() == 90) {
 				spell = spell + "Fire";
 			

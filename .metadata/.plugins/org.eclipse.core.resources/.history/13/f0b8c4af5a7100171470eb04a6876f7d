@@ -185,7 +185,7 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener {
 	}
 
 	// Key Handler Methods
-	
+	@Override
 	public void keyPressed(KeyEvent e) {
 		System.out.println(e);
 		if (e.getKeyCode() == 10) {
@@ -209,22 +209,7 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener {
 			player.update();
 			rat.parseTactics(rat.tactics);
 		}
-		if (e.getKeyCode() == 38) {
-			player.up = true;
-			player.update();
-			rat.parseTactics(rat.tactics);
-		}
-		if (e.getKeyCode() == 40) {
-			player.down = true;
-			player.update();
-			rat.parseTactics(rat.tactics);
-		}
-		
-		
-		
-		
 		if(e.getKeyCode() == 69){
-			//Fireball
 			if(spell.equalsIgnoreCase("FireFire")){
 				if (player.rotation == 0) {
 				Projectile fireball = new Projectile("fireImg", 0, 400, 20, player.x, player.y + 50, 50, 50);
@@ -242,9 +227,7 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener {
 				Projectile fireball = new Projectile("fireImg", 3, 400, 20, player.x - 50, player.y, 50, 50);
 				om.addObject(fireball);
 			}
-			spell = "";
 			}
-			//Shock
 			if(spell.equalsIgnoreCase("FireLight")){
 			if (player.rotation == 0) {
 			Projectile lightningball = new Projectile("lightningImg", 0, 200, 25, player.x, player.y + 50, 50, 50);
@@ -262,29 +245,8 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener {
 			Projectile lightningball = new Projectile("lightningImg", 3, 200, 25, player.x - 50, player.y, 50, 50);
 			om.addObject(lightningball);
 		}
-		spell = "";
 		}
-			//Freeze Orb
-		if(spell.equalsIgnoreCase("IceIce")){
-			if (player.rotation == 0) {
-		Projectile iceOrbball = new Projectile("iceOrbImg", 0, 350, 1, player.x, player.y + 50, 250, 250);
-		om.addObject(iceOrbball);
-	}
-	if (player.rotation == 1) {
-		Projectile iceOrbball = new Projectile("iceOrbImg", 1, 350, 1, player.x + 50, player.y - 125, 250, 250);
-		om.addObject(iceOrbball);
-	}
-	if (player.rotation == 2) {
-		Projectile iceOrbball = new Projectile("iceOrbImg", 2, 350, 1, player.x, player.y - 50, 250, 250);
-		om.addObject(iceOrbball);
-	}
-	if (player.rotation == 3) {
-		Projectile iceOrbball = new Projectile("iceOrbImg", 3, 350, 1, player.x - 50, player.y - 125, 250, 250);
-		om.addObject(iceOrbball);
-	}
-	spell = "";
-}
-} 
+		}
 		if (e.getKeyCode() == 90) {
 				spell = spell + "Fire";
 			
@@ -296,13 +258,30 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener {
 			
 		}
 		if (e.getKeyCode() == 67) {
-
+		/*	if (player.rotation == 0) {
+				Projectile iceOrbball = new Projectile("iceOrbImg", 0, 350, 1, player.x, player.y + 50, 250, 250);
+				om.addObject(iceOrbball);
+			}
+			if (player.rotation == 1) {
+				Projectile iceOrbball = new Projectile("iceOrbImg", 1, 350, 1, player.x + 50, player.y - 125, 250, 250);
+				om.addObject(iceOrbball);
+			}
+			if (player.rotation == 2) {
+				Projectile iceOrbball = new Projectile("iceOrbImg", 2, 350, 1, player.x, player.y - 50, 250, 250);
+				om.addObject(iceOrbball);
+			}
+			if (player.rotation == 3) {
+				Projectile iceOrbball = new Projectile("iceOrbImg", 3, 350, 1, player.x - 50, player.y - 125, 250, 250);
+				om.addObject(iceOrbball);
+			}*/
 
 				spell = spell + "Ice";
+
+			
 				
 			
 		}
-		
+
 		if (e.getKeyCode() == 82) {
 			if (player.rotation == 3) {
 				player.rotation = 0;
@@ -310,7 +289,16 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener {
 				player.rotation++;
 			}
 		}
-		
+		if (e.getKeyCode() == 38) {
+			player.up = true;
+			player.update();
+			rat.parseTactics(rat.tactics);
+		}
+		if (e.getKeyCode() == 40) {
+			player.down = true;
+			player.update();
+			rat.parseTactics(rat.tactics);
+		}
 
 	}
 
