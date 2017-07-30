@@ -69,27 +69,13 @@ public class Enemy extends GameObject {
 			System.out.println(followPlayer + " Player: " + p.x);
 		}
 		collisionBox.setBounds(x, y, width, height);
+		} else{
+			p.myTurn = true;
 		}
 	}
 
-	/*
-	 * public void parseAttack(String a){ if(a.equalsIgnoreCase("Ranged")){
-	 * if(p.x < x + 200){ p.health = p.health - damage; } else if(p.x > x -
-	 * 200){ p.health = p.health - damage; } else if(p.y < y + 200){ p.health =
-	 * p.health - damage; } else if(p.y > y - 200){ p.health = p.health -
-	 * damage; } else { System.out.println("Enemy Failed A Ranged attack!"); } }
-	 * else if(a.equalsIgnoreCase("Melee")){ if(p.x < x + 50){ p.health =
-	 * p.health - damage; } else if(p.x > x - 50){ p.health = p.health - damage;
-	 * } else if(p.y < y + 50){ p.health = p.health - damage; } else if(p.y > y
-	 * - 50){ p.health = p.health - damage; } else { System.out.println(
-	 * "Enemy Failed A Melee Attack!"); } } else
-	 * if(a.equalsIgnoreCase("ObjectThrow")){
-	 * 
-	 * } else if(a.equalsIgnoreCase("SpellCast")){
-	 * 
-	 * } }
-	 */
+
 	public void draw(Graphics g) {
-		g.drawImage(giantRatImg, x, y, null);
+		g.drawImage(kolblodFighterImg, x, y, null);
 	}
 }
