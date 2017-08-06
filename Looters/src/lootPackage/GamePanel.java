@@ -28,6 +28,7 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener {
 	int currentState = MENU_STATE;
 	int statPoints = 35;
 	ArrayList<String> items = new ArrayList<String>();
+	ArrayList<Enemy> enemys = new ArrayList<Enemy>();
 	public static BufferedImage logoImg;
 	public static BufferedImage menuBackgroundImg;
 	public static BufferedImage subLogo;
@@ -51,21 +52,23 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener {
 	boolean inventory = false;
 	boolean myTurn;
 	int yTile = 0;
+	int enemyCount = 0;
 	int xTile = 0;
 	int rand;
 	public String room = "";
 	ObjectManager om = new ObjectManager();
-	Enemy rat = new Enemy(400, 400, 50, 50);
+	
 
 	Player player = new Player(0, 0, 50, 50);
 
 	public GamePanel() {
-		rat.health = 10;
-		rat.p = player;
-		rat.speed = 20;
-		rat.damage = 2;
-		rat.tactics = "Rage";
-		rat.isAlive = true;
+		/*enemy.health = 10;
+		enemy.p = player;
+		enemy.speed = 20;
+		enemy.damage = 2;
+		enemy.tactics = "Rage";
+		enemy.isAlive = true;*/
+		newEncounter();
 		plusStrength = new JButton(new ImageIcon("Plus.png"));
 		minusStrength = new JButton(new ImageIcon("Minus.png"));
 		plusSpeed = new JButton(new ImageIcon("Plus.png"));
@@ -78,7 +81,6 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener {
 		minusStrength.setFocusable(false);
 		normal = new Font("Arial", Font.PLAIN, 35);
 		framerate = new Timer(1000 / 60, this);
-		om.addObject(rat);
 		om.addObject(player);
 		setLayout(null);
 		plusStrength.setBounds(new Rectangle(700, 85, 45, 45));
@@ -102,6 +104,7 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener {
 		add(minusSpeed);
 		add(plusSpeed);
 		items.add("Sword, 3");
+		
 		try {
 			logoImg = ImageIO.read(this.getClass().getResourceAsStream("Logo.png"));
 			menuBackgroundImg = ImageIO.read(this.getClass().getResourceAsStream("MenuBackGround.jpg"));
@@ -183,8 +186,7 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener {
 	private void updateGameState() {
 		om.update();
 		SpellTime = SpellTime - 1;
-		
-		
+
 	}
 
 	private void updateEndState() {
@@ -192,7 +194,7 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener {
 	}
 
 	// Key Handler Methods
-	
+
 	public void keyPressed(KeyEvent e) {
 		System.out.println(e);
 		if (e.getKeyCode() == 10) {
@@ -207,54 +209,52 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener {
 			}
 		}
 		if (e.getKeyCode() == 66) {
-			if(inventory == true){
+			if (inventory == true) {
 				inventory = false;
-			} else if(inventory == false){
+			} else if (inventory == false) {
 				inventory = true;
 			}
 		}
-		if (e.getKeyCode() == 39) {
+		if (e.getKeyCode() == KeyEvent.VK_RIGHT) {
 			player.right = true;
 			player.update();
-			rat.parseTactics(rat.tactics);
+			System.out.println(enemys.size());
+			for(int i = 0; i < enemys.size(); i++){enemys.get(i).parseTactics(enemys.get(i).tactics);}
+			//for(Enemy i: enemys){i.parseTactics(i.tactics);}
 		}
 		if (e.getKeyCode() == 37) {
 			player.left = true;
 			player.update();
-			rat.parseTactics(rat.tactics);
+			for(int i = 0; i < enemys.size(); i++){enemys.get(i).parseTactics(enemys.get(i).tactics);}
 		}
 		if (e.getKeyCode() == 38) {
 			player.up = true;
 			player.update();
-			rat.parseTactics(rat.tactics);
+		
+			for(int i = 0; i < enemys.size(); i++){enemys.get(i).parseTactics(enemys.get(i).tactics);}
 		}
 		if (e.getKeyCode() == 40) {
 			player.down = true;
 			player.update();
-			rat.parseTactics(rat.tactics);
+			for(int i = 0; i < enemys.size(); i++){enemys.get(i).parseTactics(enemys.get(i).tactics);}
 		}
-		
+
 		if (e.getKeyCode() == 90) {
 			spell = spell + "Fire";
-		
-	}
-	if (e.getKeyCode() == 88) {
-		
-		
-			spell = spell + "Light";
-		
-	}
-	if (e.getKeyCode() == 67) {
 
+		}
+		if (e.getKeyCode() == 88) {
+
+			spell = spell + "Light";
+
+		}
+		if (e.getKeyCode() == 67) {
 
 			spell = spell + "Ice";
-			
-		
-	}
-	
-		
-		
-		if(e.getKeyCode() == 69){
+
+		}
+
+		if (e.getKeyCode() == 69) {
 			castSpell(e);
 		}
 		if (e.getKeyCode() == 82) {
@@ -346,7 +346,11 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener {
 		minusSpeed.setVisible(false);
 		plusSpeed.setEnabled(false);
 		plusSpeed.setVisible(false);
-
+		if(player.x >= 350 && player.x <= 450 && player.y >= 350 && player.y <= 450){
+			newRoom();
+			player.x = 0;
+			player.y = 0;
+		}
 		xTile = 0;
 		yTile = 0;
 		for (int e = 0; e < 16; e++) {
@@ -368,18 +372,19 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener {
 			}
 			yTile = yTile + 50;
 		}
-		
-		
+
 		om.draw(g);
-		if(inventory == true){
+		if (inventory == true) {
 			showInventory(g);
 		}
-		
+
 	}
-	public void newRoom(){
+
+	public void newRoom() {
 		generate();
 		newEncounter();
 	}
+
 	public void generate() {
 		Random random = new Random();
 		for (int i = 0; i < 16; i++) {
@@ -417,89 +422,90 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener {
 		System.out.println(room);
 
 	}
-	public void newEncounter(){
-		Random random = new Random();
-		for(int i = 0; i > random.nextInt(3) + 1; i++){
-			Enemy enemy = new Enemy(i,400,50,50);
+
+	public void newEncounter() {
+		for (int i = 0; i < 3; i++) {
+			Enemy enemy = new Enemy(i * 40 + 200, 400, 50, 50);
 			enemy.health = om.getScore() + 5;
 			enemy.speed = om.getScore() * 5 + 10;
 			enemy.damage = om.getScore() + 3;
-		
+			enemy.p = player;
+			enemy.tactics = "Rage";
+			enemyCount = enemyCount + 1;
+			enemys.add(enemy);
+			om.addObject(enemy);
+
 		}
 	}
-	public void castSpell(KeyEvent e){
-		if(spell.equalsIgnoreCase("FireFire")){
+
+	public void castSpell(KeyEvent e) {
+		if (spell.equalsIgnoreCase("FireFire")) {
 			if (player.rotation == 0) {
-			Projectile fireball = new Projectile("fireImg", 0, 400, 20, player.x, player.y + 50, 50, 50);
-			om.addObject(fireball);
+				Projectile fireball = new Projectile("fireImg", 0, 400, 20, player.x, player.y + 50, 50, 50);
+				om.addObject(fireball);
+			}
+			if (player.rotation == 1) {
+				Projectile fireball = new Projectile("fireImg", 1, 400, 20, player.x + 50, player.y, 50, 50);
+				om.addObject(fireball);
+			}
+			if (player.rotation == 2) {
+				Projectile fireball = new Projectile("fireImg", 2, 400, 20, player.x, player.y - 50, 50, 50);
+				om.addObject(fireball);
+			}
+			if (player.rotation == 3) {
+				Projectile fireball = new Projectile("fireImg", 3, 400, 20, player.x - 50, player.y, 50, 50);
+				om.addObject(fireball);
+			}
+			spell = "";
 		}
-		if (player.rotation == 1) {
-			Projectile fireball = new Projectile("fireImg", 1, 400, 20, player.x + 50, player.y, 50, 50);
-			om.addObject(fireball);
+		// Shock
+		if (spell.equalsIgnoreCase("FireLight")) {
+			if (player.rotation == 0) {
+				Projectile lightningball = new Projectile("lightningImg", 0, 200, 25, player.x, player.y + 50, 50, 50);
+				om.addObject(lightningball);
+			}
+			if (player.rotation == 1) {
+				Projectile lightningball = new Projectile("lightningImg", 1, 200, 25, player.x + 50, player.y, 50, 50);
+				om.addObject(lightningball);
+			}
+			if (player.rotation == 2) {
+				Projectile lightningball = new Projectile("lightningImg", 2, 200, 25, player.x, player.y - 50, 50, 50);
+				om.addObject(lightningball);
+			}
+			if (player.rotation == 3) {
+				Projectile lightningball = new Projectile("lightningImg", 3, 200, 25, player.x - 50, player.y, 50, 50);
+				om.addObject(lightningball);
+			}
+			spell = "";
 		}
-		if (player.rotation == 2) {
-			Projectile fireball = new Projectile("fireImg", 2, 400, 20, player.x, player.y - 50, 50, 50);
-			om.addObject(fireball);
-		}
-		if (player.rotation == 3) {
-			Projectile fireball = new Projectile("fireImg", 3, 400, 20, player.x - 50, player.y, 50, 50);
-			om.addObject(fireball);
-		}
-		spell = "";
-		}
-		//Shock
-		if(spell.equalsIgnoreCase("FireLight")){
-		if (player.rotation == 0) {
-		Projectile lightningball = new Projectile("lightningImg", 0, 200, 25, player.x, player.y + 50, 50, 50);
-		om.addObject(lightningball);
-	}
-	if (player.rotation == 1) {
-		Projectile lightningball = new Projectile("lightningImg", 1, 200, 25, player.x + 50, player.y, 50, 50);
-		om.addObject(lightningball);
-	}
-	if (player.rotation == 2) {
-		Projectile lightningball = new Projectile("lightningImg", 2, 200, 25, player.x, player.y - 50, 50, 50);
-		om.addObject(lightningball);
-	}
-	if (player.rotation == 3) {
-		Projectile lightningball = new Projectile("lightningImg", 3, 200, 25, player.x - 50, player.y, 50, 50);
-		om.addObject(lightningball);
-	}
-	spell = "";
-	}
-		//Freeze Orb
-	if(spell.equalsIgnoreCase("IceIce")){
-		if (player.rotation == 0) {
-	Projectile iceOrbball = new Projectile("iceOrbImg", 0, 350, 1, player.x, player.y + 50, 250, 250);
-	om.addObject(iceOrbball);
-}
-if (player.rotation == 1) {
-	Projectile iceOrbball = new Projectile("iceOrbImg", 1, 350, 1, player.x + 50, player.y - 125, 250, 250);
-	om.addObject(iceOrbball);
-}
-if (player.rotation == 2) {
-	Projectile iceOrbball = new Projectile("iceOrbImg", 2, 350, 1, player.x, player.y - 50, 250, 250);
-	om.addObject(iceOrbball);
-}
-if (player.rotation == 3) {
-	Projectile iceOrbball = new Projectile("iceOrbImg", 3, 350, 1, player.x - 50, player.y - 125, 250, 250);
-	om.addObject(iceOrbball);
-}
-spell = "";
+		// Freeze Orb
+		if (spell.equalsIgnoreCase("IceIce")) {
+			if (player.rotation == 0) {
+				Projectile iceOrbball = new Projectile("iceOrbImg", 0, 350, 1, player.x, player.y + 50, 250, 250);
+				om.addObject(iceOrbball);
+			}
+			if (player.rotation == 1) {
+				Projectile iceOrbball = new Projectile("iceOrbImg", 1, 350, 1, player.x + 50, player.y - 125, 250, 250);
+				om.addObject(iceOrbball);
+			}
+			if (player.rotation == 2) {
+				Projectile iceOrbball = new Projectile("iceOrbImg", 2, 350, 1, player.x, player.y - 50, 250, 250);
+				om.addObject(iceOrbball);
+			}
+			if (player.rotation == 3) {
+				Projectile iceOrbball = new Projectile("iceOrbImg", 3, 350, 1, player.x - 50, player.y - 125, 250, 250);
+				om.addObject(iceOrbball);
+			}
+			spell = "";
 
-	
-	
-	
-	
-	
+		}
 
 	}
 
-}
-	public void showInventory(Graphics g){
+	public void showInventory(Graphics g) {
 		g.drawImage(invImg, 50, 50, 700, 700, null);
-		for(int i = 0; i < items.size(); i++){
-			if(items.get(i).substring(0, 5).equalsIgnoreCase("Sword")){
+		for (int i = 0; i < items.size(); i++) {
+			if (items.get(i).substring(0, 5).equalsIgnoreCase("Sword")) {
 				g.drawImage(swordImg, i * 100 + 100, 250, 100, 100, null);
 			}
 		}

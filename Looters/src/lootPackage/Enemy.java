@@ -35,8 +35,8 @@ public class Enemy extends GameObject {
 	}
 
 	public void parseTactics(String t) {
-		if(isAlive == true){
 		super.update();
+		if(isAlive == true){
 		if (t.equalsIgnoreCase("Rage")) {
 			if (p.x > x - follow && p.x < x + follow + 50 && p.y > y - follow && p.y < y + follow + 50) {
 				followPlayer = true;

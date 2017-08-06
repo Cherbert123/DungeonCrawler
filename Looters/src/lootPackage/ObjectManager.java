@@ -5,9 +5,8 @@ import java.util.ArrayList;
 
 public class ObjectManager {
 	ArrayList<GameObject> objects;
-	String enemyP = "2000110002";
-	int enemyPCharToInt;
-	int enemyPL = 0;
+	
+	
 	private int score = 0;
 
 	long enemyTimer = 0;
@@ -63,6 +62,7 @@ public class ObjectManager {
 						System.out.println(score);
 						o1.isAlive = false;
 						o2.isAlive = false;
+						
 					} else if ((o1 instanceof Enemy && o2 instanceof Player)
 							|| (o2 instanceof Enemy && o1 instanceof Player)) {
 						o1.isAlive = false;
