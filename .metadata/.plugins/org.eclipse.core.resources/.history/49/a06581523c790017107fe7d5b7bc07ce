@@ -376,10 +376,7 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener {
 		}
 		
 	}
-	public void newRoom(){
-		generate();
-		newEncounter();
-	}
+
 	public void generate() {
 		Random random = new Random();
 		for (int i = 0; i < 16; i++) {
@@ -416,16 +413,6 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener {
 		}
 		System.out.println(room);
 
-	}
-	public void newEncounter(){
-		Random random = new Random();
-		for(int i = 0; i > random.nextInt(3) + 1; i++){
-			Enemy enemy = new Enemy(i,400,50,50);
-			enemy.health = om.getScore() + 5;
-			enemy.speed = om.getScore() * 5 + 10;
-			enemy.damage = om.getScore() + 3;
-		
-		}
 	}
 	public void castSpell(KeyEvent e){
 		if(spell.equalsIgnoreCase("FireFire")){
@@ -498,9 +485,10 @@ spell = "";
 }
 	public void showInventory(Graphics g){
 		g.drawImage(invImg, 50, 50, 700, 700, null);
-		for(int i = 0; i < items.size(); i++){
+		for(int i = 0; i < 20; i++){
+			System.out.println(items);
 			if(items.get(i).substring(0, 5).equalsIgnoreCase("Sword")){
-				g.drawImage(swordImg, i * 100 + 100, 250, 100, 100, null);
+				g.drawImage(swordImg, i * 200, 150, null);
 			}
 		}
 	}
