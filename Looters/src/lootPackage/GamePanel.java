@@ -42,6 +42,7 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener {
 	public static BufferedImage attackImg;
 	public static BufferedImage invImg;
 	public static BufferedImage swordImg;
+	public static BufferedImage doorImg;
 	Font normal;
 	int SpellTime;
 	String spell = "";
@@ -57,17 +58,14 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener {
 	int rand;
 	public String room = "";
 	ObjectManager om = new ObjectManager();
-	
 
 	Player player = new Player(0, 0, 50, 50);
 
 	public GamePanel() {
-		/*enemy.health = 10;
-		enemy.p = player;
-		enemy.speed = 20;
-		enemy.damage = 2;
-		enemy.tactics = "Rage";
-		enemy.isAlive = true;*/
+		/*
+		 * enemy.health = 10; enemy.p = player; enemy.speed = 20; enemy.damage =
+		 * 2; enemy.tactics = "Rage"; enemy.isAlive = true;
+		 */
 		newEncounter();
 		plusStrength = new JButton(new ImageIcon("Plus.png"));
 		minusStrength = new JButton(new ImageIcon("Minus.png"));
@@ -104,12 +102,13 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener {
 		add(minusSpeed);
 		add(plusSpeed);
 		items.add("Sword, 3");
-		
+
 		try {
+			doorImg = ImageIO.read(this.getClass().getResourceAsStream("Door.jpg"));
 			logoImg = ImageIO.read(this.getClass().getResourceAsStream("Logo.png"));
 			menuBackgroundImg = ImageIO.read(this.getClass().getResourceAsStream("MenuBackGround.jpg"));
 			subLogo = ImageIO.read(this.getClass().getResourceAsStream("Sublogo.png"));
-			woodenWallImg = ImageIO.read(this.getClass().getResourceAsStream("WoodenWall.jpg"));
+			woodenWallImg = ImageIO.read(this.getClass().getResourceAsStream("WoodenWall.png"));
 			playerImg = ImageIO.read(this.getClass().getResourceAsStream("Player.png"));
 			solidFloorTile = ImageIO.read(this.getClass().getResourceAsStream("solidFloorTile.png"));
 			waterFloorTile = ImageIO.read(this.getClass().getResourceAsStream("waterFloorTile.png"));
@@ -219,24 +218,32 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener {
 			player.right = true;
 			player.update();
 			System.out.println(enemys.size());
-			for(int i = 0; i < enemys.size(); i++){enemys.get(i).parseTactics(enemys.get(i).tactics);}
-			//for(Enemy i: enemys){i.parseTactics(i.tactics);}
+			for (int i = 0; i < enemys.size(); i++) {
+				enemys.get(i).parseTactics(enemys.get(i).tactics);
+			}
+			// for(Enemy i: enemys){i.parseTactics(i.tactics);}
 		}
 		if (e.getKeyCode() == 37) {
 			player.left = true;
 			player.update();
-			for(int i = 0; i < enemys.size(); i++){enemys.get(i).parseTactics(enemys.get(i).tactics);}
+			for (int i = 0; i < enemys.size(); i++) {
+				enemys.get(i).parseTactics(enemys.get(i).tactics);
+			}
 		}
 		if (e.getKeyCode() == 38) {
 			player.up = true;
 			player.update();
-		
-			for(int i = 0; i < enemys.size(); i++){enemys.get(i).parseTactics(enemys.get(i).tactics);}
+
+			for (int i = 0; i < enemys.size(); i++) {
+				enemys.get(i).parseTactics(enemys.get(i).tactics);
+			}
 		}
 		if (e.getKeyCode() == 40) {
 			player.down = true;
 			player.update();
-			for(int i = 0; i < enemys.size(); i++){enemys.get(i).parseTactics(enemys.get(i).tactics);}
+			for (int i = 0; i < enemys.size(); i++) {
+				enemys.get(i).parseTactics(enemys.get(i).tactics);
+			}
 		}
 
 		if (e.getKeyCode() == 90) {
@@ -338,6 +345,7 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener {
 	}
 
 	private void drawGameState(Graphics g) {
+
 		plusStrength.setEnabled(false);
 		plusStrength.setVisible(false);
 		minusStrength.setEnabled(false);
@@ -346,7 +354,7 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener {
 		minusSpeed.setVisible(false);
 		plusSpeed.setEnabled(false);
 		plusSpeed.setVisible(false);
-		if(player.x >= 350 && player.x <= 450 && player.y >= 350 && player.y <= 450){
+		if (player.x >= 350 && player.x <= 450 && player.y >= 350 && player.y <= 450) {
 			newRoom();
 			player.x = 0;
 			player.y = 0;
@@ -372,7 +380,7 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener {
 			}
 			yTile = yTile + 50;
 		}
-
+		g.drawImage(doorImg, 0, -10, null);
 		om.draw(g);
 		if (inventory == true) {
 			showInventory(g);
@@ -425,12 +433,15 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener {
 
 	public void newEncounter() {
 		for (int i = 0; i < 3; i++) {
-			Enemy enemy = new Enemy(i * 40 + 200, 400, 50, 50);
+			Random random = new Random();
+
+			Enemy enemy = new Enemy(i * 40 + 200, 400 + random.nextInt(200) - 100, 50, 50);
 			enemy.health = om.getScore() + 5;
-			enemy.speed = om.getScore() * 5 + 10;
-			enemy.damage = om.getScore() + 3;
+			enemy.speed = om.getScore() * 2 + 10;
+			enemy.damage = om.getScore() / 2 + 3;
 			enemy.p = player;
 			enemy.tactics = "Rage";
+			enemy.type = random.nextInt(3);
 			enemyCount = enemyCount + 1;
 			enemys.add(enemy);
 			om.addObject(enemy);
@@ -498,6 +509,8 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener {
 			}
 			spell = "";
 
+		} else {
+			spell = "";
 		}
 
 	}

@@ -5,8 +5,7 @@ import java.util.ArrayList;
 
 public class ObjectManager {
 	ArrayList<GameObject> objects;
-	
-	
+
 	private int score = 0;
 
 	long enemyTimer = 0;
@@ -54,7 +53,6 @@ public class ObjectManager {
 				GameObject o2 = objects.get(j);
 
 				if (o1.collisionBox.intersects(o2.collisionBox)) {
-					System.out.println("Checked Collision (Projectile)");
 					if ((o1 instanceof Enemy && o2 instanceof Projectile)
 							|| (o2 instanceof Enemy && o1 instanceof Projectile)) {
 
@@ -62,7 +60,7 @@ public class ObjectManager {
 						System.out.println(score);
 						o1.isAlive = false;
 						o2.isAlive = false;
-						
+
 					} else if ((o1 instanceof Enemy && o2 instanceof Player)
 							|| (o2 instanceof Enemy && o1 instanceof Player)) {
 						o1.isAlive = false;
